@@ -2,7 +2,6 @@ package com.example.ufanettask.cache.configuration;
 
 import com.example.ufanettask.cache.entity.UserInvoice;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -15,11 +14,8 @@ public class RedisConfiguration {
 
     @Bean
     public RedisTemplate<String, UserInvoice> redisUserTemplate(
-            RedisConnectionFactory connectionFactory) {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.findAndRegisterModules();
+            RedisConnectionFactory connectionFactory,
+            ObjectMapper objectMapper) {
 
         RedisTemplate<String, UserInvoice> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
