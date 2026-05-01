@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceCacheService {
+public class UserInvoiceCacheService {
 
     private final UserInvoiceRedisRepository userInvoiceRedisRepository;
     private final RedisTemplate<String, UserInvoice> redisTemplate;

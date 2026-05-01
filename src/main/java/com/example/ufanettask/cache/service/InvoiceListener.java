@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 public class InvoiceListener {
 
     private final ObjectMapper objectMapper;
-    private final InvoiceCacheService invoiceCacheService;
+    private final UserInvoiceCacheService userInvoiceCacheService;
 
     @RabbitListener(queues = "${queue.name.invoice}")
     public void handleInvoice(String message) {
         log.info("Received invoice: {}", message);
         try {
             Invoice invoice = objectMapper.readValue(message, Invoice.class);
-            invoiceCacheService.saveInvoiceToUser(invoice);
+            userInvoiceCacheService.saveInvoiceToUser(invoice);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

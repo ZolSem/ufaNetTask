@@ -22,7 +22,7 @@ public class UserInvoice {
     private List<Invoice> invoices =  new ArrayList<>();
     private SubscriptionType subscriptionType;
     private LocalDate activationDate;
-    private LocalDate activeUntill;
+    private LocalDate activeUntil;
 
     public UserInvoice(Long userId, LocalDate activationDate) {
         this.userId = userId;
@@ -33,6 +33,6 @@ public class UserInvoice {
     public void addInvoice(Invoice invoice) {
         this.invoices.add(invoice);
         this.subscriptionType = invoice.getSubscriptionType();
-        this.activeUntill= invoice.getIssueDate().plusMonths(1);
+        this.activeUntil= invoice.getIssueDate().plusMonths(1);
     }
 }
