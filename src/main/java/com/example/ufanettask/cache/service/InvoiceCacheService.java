@@ -16,7 +16,7 @@ public class InvoiceCacheService {
     private final UserInvoiceRedisRepository userInvoiceRedisRepository;
     private final RedisTemplate<String, UserInvoice> redisTemplate;
 
-    private static final String KEY_PREFIX = "user:";
+    private static final String KEY_PREFIX = "userId:";
 
     public void saveInvoiceToUser(Invoice invoice) {
         try {
