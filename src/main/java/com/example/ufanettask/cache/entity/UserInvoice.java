@@ -24,9 +24,8 @@ public class UserInvoice {
     private LocalDate activationDate;
     private LocalDate activeUntil;
 
-    public UserInvoice(Long userId, LocalDate activationDate) {
+    public UserInvoice(Long userId) {
         this.userId = userId;
-        this.activationDate = activationDate;
         this.invoices = new ArrayList<>();
     }
 

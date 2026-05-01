@@ -1,6 +1,7 @@
 
 package com.example.ufanettask.cache.dto;
 
+import com.example.ufanettask.cache.enums.SubscriptionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInfoResponse {
-    private String activeSubscriptionType;
+    private SubscriptionType activeSubscriptionType;
     private List<InvoiceDto> invoices;
 
     @Data

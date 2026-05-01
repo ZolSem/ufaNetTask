@@ -29,14 +29,14 @@ public class UserInvoiceController {
             @RequestParam(defaultValue = "10") int size) {
         log.info("getUserInfo 1");
         UserInvoice user = userInvoiceCacheService
-                .getUser(userId)
-                .orElseThrow(() -> new IllegalStateException("User not found with id:" + userId));
+                .findUserInvoiceById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User does not exist with id '" + userId + "'"));
 
         log.info("getUserInfo 2");
         UserInfoResponse response = new UserInfoResponse();
         log.info("getUserInfo 3: {}", response);
 
-        response.setActiveSubscriptionType(user.getSubscriptionType().toString());
+        response.setActiveSubscriptionType(user.getSubscriptionType());
         log.info("getUserInfo 4: {}", response);
 
         List<Invoice> invoices = user.getInvoices().reversed();
