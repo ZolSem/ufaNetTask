@@ -1,7 +1,6 @@
 package com.example.ufanettask.cache.configuration;
 
 import com.example.ufanettask.cache.entity.UserInvoice;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,8 +13,7 @@ public class RedisConfiguration {
 
     @Bean
     public RedisTemplate<String, UserInvoice> redisUserTemplate(
-            RedisConnectionFactory connectionFactory,
-            ObjectMapper objectMapper) {
+            RedisConnectionFactory connectionFactory) {
 
         RedisTemplate<String, UserInvoice> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);

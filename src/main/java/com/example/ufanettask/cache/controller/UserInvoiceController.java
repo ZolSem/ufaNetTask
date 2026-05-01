@@ -30,12 +30,15 @@ public class UserInvoiceController {
         UserInvoice user = userInvoiceCacheService
                 .findUserInvoiceById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User does not exist with id '" + userId + "'"));
+
         UserInfoResponse response = new UserInfoResponse();
         response.setActiveSubscriptionType(user.getSubscriptionType());
+
         List<Invoice> invoices = user.getInvoices().reversed();
         List<UserInfoResponse.InvoiceDto> invoiceDtos = user.getInvoices().reversed().stream()
                 .map(invoice -> objectMapper.convertValue(invoice, UserInfoResponse.InvoiceDto.class))
                 .toList();
+
         int start = page * size;
         int end = Math.min(start + size, invoices.size());
         response.setInvoices(invoiceDtos.subList(start, end));

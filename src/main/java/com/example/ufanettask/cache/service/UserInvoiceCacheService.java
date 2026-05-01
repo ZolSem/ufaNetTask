@@ -14,16 +14,25 @@ import java.util.Optional;
 public class UserInvoiceCacheService {
 
     private final RedisTemplate<String, UserInvoice> redisTemplate;
-    private static final String KEY_PREFIX = "userId:";
-
     private final Cache<Long, UserInvoice> localUserInvoiceCache;
+
+    private static final String KEY_PREFIX = "userId:";
 
     public void saveInvoiceToUser(Invoice invoice) {
         try {
             Long userId = invoice.getUserId();
             String key = KEY_PREFIX + userId;
 
-            UserInvoice userInvoice = getUserInvoice(userId);
+            UserInvoice userInvoice;
+            try {
+                userInvoice = findUserInvoiceById(userId).orElse(new UserInvoice(userId));
+            } catch (Exception e) {
+                userInvoice = localUserInvoiceCache.getIfPresent(userId);
+                if (userInvoice == null) {
+                    userInvoice = new UserInvoice(userId);
+                }
+            }
+
             if (userInvoice.getActivationDate() == null) {
                 userInvoice.setActivationDate(invoice.getActivationDate());
             }
@@ -36,22 +45,17 @@ public class UserInvoiceCacheService {
         }
     }
 
-    public UserInvoice getUserInvoice(Long userId) {
-        UserInvoice userInvoice;
-        try {
-            userInvoice = findUserInvoiceById(userId).orElse(new UserInvoice(userId));
-        } catch (Exception e) {
-            userInvoice = localUserInvoiceCache.getIfPresent(userId);
-            if (userInvoice == null) {
-                userInvoice = new UserInvoice(userId);
-            }
-        }
-        localUserInvoiceCache.put(userId, userInvoice);
-        return userInvoice;
-    }
-
     public Optional<UserInvoice> findUserInvoiceById(Long userId) {
         String key = KEY_PREFIX + userId;
-        return Optional.ofNullable(redisTemplate.opsForValue().get(key));
+        UserInvoice userInvoice;
+        try {
+            userInvoice = redisTemplate.opsForValue().get(key);
+        } catch (Exception e) {
+            userInvoice = localUserInvoiceCache.getIfPresent(userId);
+        }
+        if (userInvoice != null) {
+            localUserInvoiceCache.put(userId, userInvoice);
+        }
+        return Optional.ofNullable(userInvoice);
     }
 }
